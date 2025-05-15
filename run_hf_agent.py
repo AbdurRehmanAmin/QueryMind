@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Run a Hugging Face model-based DS-Agent on a custom dataset.
+Run QueryMindCoder based QueryMind on a custom dataset.
 For use as a backend service for a web frontend.
 """
 
@@ -14,10 +14,10 @@ import base64
 from pathlib import Path
 from typing import Dict, Any, List, Optional, Union
 
-from development.MLAgentBench.agents.hf_agent import HFDSAgent
+from dev.Agents&Initializations.agentsetup.hf_agent import HFDSAgent
 
 class SimpleEnvironment:
-    """A simple environment for running the HF DS-Agent"""
+    """A simple environment for running QueryMind"""
     
     def __init__(self, args):
         self.args = args
@@ -325,7 +325,7 @@ Write an improved implementation that follows the plan. Include all necessary im
         return f"Unknown action: {action_name}"
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Run a Hugging Face model-based DS-Agent on a custom dataset")
+    parser = argparse.ArgumentParser(description="Run QueryMindCoder based QueryMind on a custom dataset")
     
     # Dataset and environment settings
     parser.add_argument("--dataset", type=str, required=True, help="Path to dataset file or directory")
@@ -334,7 +334,7 @@ def parse_args():
     parser.add_argument("--log_dir", type=str, default="logs", help="Directory for logs")
     
     # Model settings
-    parser.add_argument("--hf_model_id", type=str, default="gpt2", help="Hugging Face model ID for local execution")
+    parser.add_argument("--hf_model_id", type=str, default="QueryMindCoder", help="QueryMindCoder ID for local execution")
     parser.add_argument("--api_url", type=str, default=None, help="URL to remote model API")
     parser.add_argument("--api_key", type=str, default=None, help="API key for remote model API")
     parser.add_argument("--max_iterations", type=int, default=5, help="Maximum number of iterations")
@@ -374,7 +374,7 @@ def encode_model_files(model_dir):
     return model_files
 
 def run_agent(args):
-    """Run the DS-Agent and return results as a dictionary"""
+    """Run QueryMind and return results as a dictionary"""
     # Prepare directories
     work_dir = os.path.abspath(args.work_dir)
     log_dir = os.path.abspath(args.log_dir)
@@ -389,9 +389,9 @@ def run_agent(args):
     
     # Initialize agent
     if args.api_url:
-        print(f"Initializing HF DS-Agent with remote API: {args.api_url}")
+        print(f"Initializing QueryMind with remote API: {args.api_url}")
     else:
-        print(f"Initializing HF DS-Agent with model: {args.hf_model_id}")
+        print(f"Initializing with QueryMindCoder model: {args.hf_model_id}")
     
     agent = HFDSAgent(args, env)
     
@@ -441,7 +441,6 @@ def main():
 
 def api_handler(event, context=None):
     """
-    AWS Lambda or similar cloud function handler
     Expects event with the following structure:
     {
         "dataset_url": "https://example.com/dataset.csv",
@@ -496,7 +495,7 @@ def api_handler(event, context=None):
         args.task_description = task_description
         args.work_dir = work_dir
         args.log_dir = log_dir
-        args.hf_model_id = event.get("hf_model_id", "gpt2")
+        args.hf_model_id = event.get("hf_model_id", "QueryMindCoder")
         args.api_url = event.get("model_api_url")
         args.api_key = event.get("model_api_key")
         args.max_iterations = event.get("max_iterations", 3)
