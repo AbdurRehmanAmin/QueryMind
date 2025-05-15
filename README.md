@@ -1,98 +1,112 @@
-# DS-Agent
+# QueryMind: Automated Data Science Platform
 
-This is the official implementation of our work "DS-Agent: Automated Data Science by Empowering Large Language Models with Case-Based Reasoning" (ICML 2024). [[arXiv Version]](https://arxiv.org/abs/2402.17453) [[Download Benchmark(Google Drive)]](https://drive.google.com/file/d/1xUd1nvCsMLfe-mv9NBBHOAtuYnSMgBGx/view?usp=sharing)
+QueryMind is an automated data science platform that empowers users to solve complex machine learning tasks through case-based reasoning and large language models. Built upon the DS-Agent architecture ([ICML 2024 paper](https://arxiv.org/abs/2402.17453)), QueryMind extends the original system with enhanced functionality, a web interface, and improved model training capabilities.
 
-![overview.png](figures/overview.png)
+![System Architecture](figures/SystemArch.png)
 
-## Benchmark and Dataset
+## Features
 
-We select 30 representative data science tasks covering three data modalities and two fundamental ML task types. Please download the datasets and corresponding configuration files via [[Google Drive]](https://drive.google.com/file/d/1xUd1nvCsMLfe-mv9NBBHOAtuYnSMgBGx/view?usp=sharing)  here and unzip them to the directory of "development/benchmarks". Besides, we collect the human insight cases from Kaggle in development/data.zip. Please unzip it, too.
+- **Automated Machine Learning**: Automatically analyzes datasets, selects appropriate models, and optimizes hyperparameters
+- **Multi-Agent Architecture**: Utilizes specialized agents (ranker, planner, programmer, debugger, logger) working together to solve data science tasks
+- **Case-Based Reasoning**: Leverages a library of data science patterns and insights from real-world Kaggle competitions
+- **Web Interface**: User-friendly interface powered by Llama 3.2 8B for natural language interaction
+- **Model Training & Deployment**: Automatically trains models on custom datasets and provides the trained model for deployment
+- **Multiple Data Modalities**: Supports tabular, text, and time series data analysis
 
-> [!WARNING]
-> **Non-Infringement:** The pre-processed data we provide is intended exclusively for educational and research purposes. We do not claim ownership of the original data, and any use of this data must respect the rights of the original creators. Users are responsible for ensuring that their use of the data does not infringe on any copyrights or other intellectual property rights.
+## System Architecture
 
-![overview.png](figures/task.png)
+QueryMind consists of several key components:
+
+1. **Web Frontend**: User-facing interface for uploading datasets and defining problems
+2. **Backend API**: FastAPI service that handles requests, manages tasks, and returns results
+3. **Model Server**: Dedicated server for the fine-tuned Qwen2.5-coder-7B model
+4. **Agent Framework**: The core DS-Agent implementation with case-based reasoning capabilities
+5. **Training Environment**: Executes and evaluates the generated machine learning code
 
 ## Setup
 
-This project is built on top of the framework of MLAgentBench. First, install MLAgentBench package with:
+### Prerequisites
 
-```shell
-cd development
-pip install -e.
+- Python 3.8+
+- PyTorch 1.10+
+- CUDA-compatible GPU (recommended)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/AbdurRehmanAmin/QueryMind.git
+cd QueryMind
 ```
 
-Then, please install neccessary libraries in the requirements.
-
-```shell
-pip install -r requirements.txt
+2. Install the required packages:
+```bash
+pip install -r dev/requirements.txt
 ```
 
-Since DS-Agent mainly utilizes GPT-3.5 and GPT-4 for all the experiments, please fill in the openai key in development/MLAgentBench/LLM.py and deployment/generate.py
-
-## Development Stage
-
-Run DS-Agent for development tasks with the following command:
-
-```shell
-cd development/MLAgentBench
-python runner.py --task feedback --llm-name gpt-3.5-turbo-16k --edit-script-llm-name gpt-3.5-turbo-16k
+3. Set up the model server:
+```bash
+python model_server.py --load-at-startup --model-id "AbdurRehmanAmin/QueryMindCoder"
 ```
 
-During execution, logs and intermediate solution files will be saved in logs/ and workspace/. 
-
-To facilitate potential future research, we also release the raw data of the task-specific evaluation metric for all the development tasks with four agents across five trials in `Raw-results-dev.xlsx`. Note that 'F' denotes failed trial in the excel document.
-
-## Deployment Stage
-
-Run DS-Agent for deployment tasks with the provided command:
-
-```shell
-cd deployment
-bash code_generation.sh
-bash code_evaluation.sh
+4. Start the backend API:
+```bash
+python backend_api.py
 ```
 
-For open-sourced LLM, i.e., mixtral-8x7b-Instruct-v0.1 in this paper, we utilize the vllm framework. First, enable the LLMs serverd with
+## Usage
 
-```shell
-cd deployment
-bash start_api.sh
-```
+### Using the Web Interface
 
-Then, run the script shell and replace the configuration --llm by mixtral.
+1. Navigate to the web interface at `http://localhost:3000`
+2. Upload your dataset
+3. Describe your machine learning task in natural language
+4. Set additional parameters (optional)
+5. Submit the task and monitor progress
 
-## Frequently Asked Questions
+### Using the API Directly
 
-### Q1. How to calculate the best rank and mean rank of the evaluated agents?
-**A1.** Assume there are two agents A and B. Given a data science task, both agents perform 5 random trials to build models. Then, we use the predefined evaluation metric to evaluate the built model in the testing set. As such, we can rank these ten built models via the evaluation results.
-> Assume the models built by Agent A attains the rank [1,3,5,7,9], and the models built by Agent B attains the rank [2,4,6,8,10].
+```python
+import requests
 
-As such, MeanRank(A)=mean([1,3,5,7,9])=5, BestRank(A)=min([1,3,5,7,9])=1. Similarly, MeanRank(B)=6, BestRank(B)=2.
-
-### Q2. How to adapt DS-Agent to custom datasets/Kaggle competitions?
-**A2.** First of all, the case bank of the current version only covers data modalities of tabular, text and time series data. Thus, if the new task involves other data modalities, you need to collect corresponding cases by manual and store them into the case bank. Then, you need to construct a directory in `development/benchmarks/`. Please refer to the format of the given benchmark tasks and prepare the following files:
-- `train.csv` and `test.csv`: the training dataset and testing dataset.
-- `submission.py`: implementation of the desired evaluation metric in the custom task (e.g., MAE for regression task and Accuracy for classification task).
-- `train.py`: an initial script for the custom task, with implementation of basic data loading, training and evaluation. Note that the current benchmarks use random guess as an initial training solution.
-- `prepared`: a sign file required by MLAgentBench. Just copy one from other benchmark tasks.
-- `research_problem.txt`: the task description of the custom task. You can refer to the other benchmark tasks.
-
-## Cite
-
-Please consider citing our paper if you find this work useful:
-
-```
-
-@InProceedings{DS-Agent,
-  title = 	 {{DS}-Agent: Automated Data Science by Empowering Large Language Models with Case-Based Reasoning},
-  author =       {Guo, Siyuan and Deng, Cheng and Wen, Ying and Chen, Hechang and Chang, Yi and Wang, Jun},
-  booktitle = 	 {Proceedings of the 41st International Conference on Machine Learning},
-  pages = 	 {16813--16848},
-  year = 	 {2024},
-  volume = 	 {235},
-  series = 	 {Proceedings of Machine Learning Research},
-  publisher =    {PMLR}
+files = {'dataset': open('your_dataset.csv', 'rb')}
+data = {
+    'task_description': 'Predict housing prices based on features',
+    'max_iterations': 3,
+    'max_training_time': 1800
 }
 
+response = requests.post('http://localhost:8000/run-dsagent', files=files, data=data)
+task_id = response.json()['task_id']
+
+# Check status
+status = requests.get(f'http://localhost:8000/task/{task_id}')
+print(status.json())
 ```
+
+## Extending QueryMind
+
+### Adding New Case Types
+
+To support new data modalities or machine learning tasks:
+
+1. Add new cases to the case bank in `dev/Agents & Initializations/case_bank.py`
+2. Follow the existing case format with problem description, solution approach, and insights
+3. The system will automatically incorporate these cases into its reasoning process
+
+### Customizing the Model
+
+QueryMind uses a fine-tuned Qwen2.5-coder-7B model. To use a different model:
+
+1. Modify `model_server.py` to use your preferred model
+2. Update the `load_model` function with your model ID
+3. Restart the model server
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- This project builds upon the [DS-Agent paper](https://arxiv.org/abs/2402.17453) by Guo et al.
+- We acknowledge the MLAgentBench framework which provides the foundation for our implementation
