@@ -19,7 +19,7 @@ QueryMind consists of several key components:
 
 1. **Web Frontend**: User-facing interface for uploading datasets and defining problems
 2. **Backend API**: FastAPI service that handles requests, manages tasks, and returns results
-3. **Model Server**: Dedicated server for the fine-tuned Qwen2.5-coder-7B model
+3. **Model Server**: Dedicated server for the fine-tuned QueryMindCoder model
 4. **Agent Framework**: The core DS-Agent implementation with case-based reasoning capabilities
 5. **Training Environment**: Executes and evaluates the generated machine learning code
 
