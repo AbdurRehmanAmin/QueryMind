@@ -8,15 +8,15 @@ import sys
 from pprint import pprint
 
 # Add the development directory to the path
-sys.path.append("development")
+sys.path.append("dev")
 
 # Import the CaseBank
-from MLAgentBench.case_bank import CaseBank, retrieve_similar_cases, generate_case_prompt
+from Agents&Initializations.case_bank import CaseBank, retrieve_similar_cases, generate_case_prompt
 
 def test_case_bank():
     """Test the case bank by retrieving similar cases for a sample query"""
     # Create a case bank instance pointing to the data directory
-    case_bank = CaseBank(os.path.join("development", "data"))
+    case_bank = CaseBank(os.path.join("dev", "data"))
     
     # Print the number of cases loaded
     print(f"Loaded {len(case_bank.cases)} cases")
