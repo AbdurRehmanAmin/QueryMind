@@ -87,7 +87,7 @@ async def health_check():
     """Health check endpoint"""
     if model is None or tokenizer is None:
         return {"status": "not_ready", "message": "Model not loaded yet"}
-    return {"status": "ready", "model": "Qwen2.5-coder-7b"}
+    return {"status": "ready", "model": "QueryMindCoder"}
 
 @app.post("/generate", response_model=ModelResponse)
 async def generate_text(request: ModelRequest):
@@ -177,7 +177,7 @@ async def compatibility_endpoint(request: Request):
             "id": f"cmpl-{int(time.time())}",
             "object": "text_completion",
             "created": int(time.time()),
-            "model": "Qwen2.5-coder-7b",
+            "model": "QueryMindCoder",
             "choices": [
                 {
                     "text": result.generated_text,
