@@ -32,7 +32,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Define the models for request and response
-class DSAgentRequest(BaseModel):
+class QueryMindRequest(BaseModel):
     task_description: str
     model_api_url: Optional[str] = None
     model_api_key: Optional[str] = None
@@ -40,7 +40,7 @@ class DSAgentRequest(BaseModel):
     max_training_time: int = 1800  # 30 minutes
     include_model: bool = True
 
-class DSAgentResponse(BaseModel):
+class QueryMindResponse(BaseModel):
     task_id: str
     status: str
     message: str
@@ -90,8 +90,8 @@ async def health_check():
     """Health check endpoint"""
     return {"status": "healthy"}
 
-@app.post("/run-dsagent", response_model=DSAgentResponse)
-async def run_dsagent(
+@app.post("/run-QueryMind", response_model=QueryMindResponse)
+async def run_QueryMind(
     background_tasks: BackgroundTasks,
     task_description: str = Form(...),
     dataset: UploadFile = File(...),
@@ -147,7 +147,7 @@ async def run_dsagent(
         result_dir
     )
     
-    return DSAgentResponse(
+    return QueryMindResponse(
         task_id=task_id,
         status="queued",
         message="Task submitted successfully"
