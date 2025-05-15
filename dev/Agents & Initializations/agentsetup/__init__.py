@@ -1,3 +1,3 @@
-"""Agent implementations for the HF-powered DS-Agent."""
+"""Agent implementations for QueryMind."""
 
 from .hf_agent import HFDSAgent
