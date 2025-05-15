@@ -72,7 +72,7 @@ def complete_text_huggingface(prompt, model_id, stop_sequences=[], max_tokens_to
         raise LLMError(e)
 
 def complete_text_remote_api(prompt, api_url, api_key=None, stop_sequences=[], max_tokens_to_sample=1000, temperature=0.5, log_file=None, **kwargs):
-    """Call a remote API endpoint (like a hosted Qwen2.5-coder-7b) to complete a prompt."""
+    """Call a remote API endpoint (like hosted QueryMindCoder) to complete a prompt."""
     try:
         headers = {
             "Content-Type": "application/json"
