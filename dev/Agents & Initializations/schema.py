@@ -1,4 +1,4 @@
-"""Basic schema definitions for the DS-Agent system."""
+"""Basic schema definitions for QueryMind system."""
 
 import json
 import datetime
