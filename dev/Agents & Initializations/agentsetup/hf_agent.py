@@ -1,12 +1,12 @@
-"""Hugging Face model-based agent implementation with multi-agent architecture."""
+"""QueryMindCoder agent implementation with multi-agent architecture."""
 import os
 import sys
 import json
 import time
 import torch
 import subprocess
-from MLAgentBench.LLM import get_model_completion
-from MLAgentBench.schema import Action
+from Agents&Initializations.LLM import get_model_completion
+from Agents&Initializations.schema import Action
 
 class HFDSAgent:
     """
@@ -47,9 +47,9 @@ class HFDSAgent:
         }
         
         if self.api_url:
-            print(f"Initialized HF DS-Agent with remote model API: {self.api_url}")
+            print(f"Initialized QueryMind with remote model API: {self.api_url}")
         else:
-            print(f"Initialized HF DS-Agent with model: {self.model_id} on {self.device}")
+            print(f"Initialized QueryMind with QueryMindCoder: {self.model_id} on {self.device}")
         
         # Create log directory if it doesn't exist
         os.makedirs(self.log_dir, exist_ok=True)
