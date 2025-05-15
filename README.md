@@ -1,4 +1,4 @@
-# QueryMind: Automated Data Science Platform
+# QueryMind: A Context Aware Engine
 
 QueryMind is an automated data science platform that empowers users to solve complex machine learning tasks through case-based reasoning and large language models. Built upon the DS-Agent architecture ([ICML 2024 paper](https://arxiv.org/abs/2402.17453)), QueryMind extends the original system with enhanced functionality, a web interface, and improved model training capabilities.
 
