@@ -102,6 +102,8 @@ QueryMind uses a fine-tuned Qwen2.5-coder-7B model. To use a different model:
 2. Update the `load_model` function with your model ID
 3. Restart the model server
 
+#### *See QueryMind in action:* https://drive.google.com/file/d/1optyqwUEz4NPsu6niTJ9JlZ0VTc_sA_F/view?usp=drive_link
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
